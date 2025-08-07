@@ -65,21 +65,5 @@ object NetworkProvideModule {
         return retrofit.create(Services::class.java)
     }
 
- /*   @Provides
-    @Singleton
-    fun provideRemoteDataSource(
-        apiService: Services
-    ): RemoteDataSource {
-        return RemoteDataSourceImp(apiService)
-    }
-    @Provides
-    @Singleton
-    fun provideNewsRepo(
-        remoteDataSource: RemoteDataSource
-    ): NewsRepo {
-        return NewsRepoImp(remoteDataSource)
-    }*/
-
-
 
 }

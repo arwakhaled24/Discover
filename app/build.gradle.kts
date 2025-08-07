@@ -62,17 +62,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
     implementation(project(":feature"))
-
+    implementation(project(":data"))
+    implementation(project(":domain"))
     implementation("com.google.dagger:hilt-android:2.56.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
 
-    val composeBom = platform("androidx.compose:compose-bom:2025.05.00")
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
+
+    implementation(platform("androidx.compose:compose-bom:2025.05.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2025.05.00"))
     implementation("androidx.compose.material3:material3")
 
     implementation("io.coil-kt:coil-compose:2.6.0")

@@ -1,5 +1,6 @@
-package com.example.feature.search
+package com.example.feature.search.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,45 +11,28 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.feature.R
+import com.example.feature.search.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
+    viewModel: SearchViewModel = hiltViewModel(),
     onSearchClick: (String) -> Unit = {}
 ) {
     var query by remember { mutableStateOf("") }
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     val performSearch = {
         if (query.isNotBlank()) {
-            onSearchClick(query.trim())
-            keyboardController?.hide()
+            onSearchClick(query)
+            viewModel.markOnboardingDone()
         }
     }
-
     Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier
-                    .fillMaxWidth().height(80.dp),
-                title = {
-                        Text(
-                            "Discover",
-                            fontSize = 35.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFF5F5F5),
-                    titleContentColor = Color.Black
-                )
-            )
-        },
         containerColor = Color(0xFFF5F5F5)
     ) { padding ->
         Column(
@@ -59,12 +43,19 @@ fun SearchScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.app_icon),
+                contentDescription = "Logo",
+                modifier = Modifier.size(200.dp)
+            )
 
             Box(
                 contentAlignment = Alignment.Center) {
                 Text(
-                    text = "What are you looking for?",
-                    fontSize = 18.sp,
+                    text = "One Keyword Away from the Headlines",
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.Black,
                     modifier = Modifier
@@ -78,7 +69,7 @@ fun SearchScreen(
                 onValueChange = { query = it },
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(25.dp),
                 label = { Text("Enter search terms") },
                 leadingIcon = {
                     Icon(
@@ -97,12 +88,6 @@ fun SearchScreen(
                     unfocusedLabelColor = Color.Gray
                 ),
                 singleLine = true,
-             /*   keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Search
-                ),*/
-                /*keyboardActions = KeyboardActions(
-                    onSearch = { performSearch() }
-                )*/
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -119,7 +104,7 @@ fun SearchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(20.dp),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 4.dp,
                     pressedElevation = 2.dp,
@@ -151,12 +136,5 @@ fun SearchScreen(
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun DiscoverScreenPreview() {
-    SearchScreen { query ->
-        println("Searching for: $query")
     }
 }
